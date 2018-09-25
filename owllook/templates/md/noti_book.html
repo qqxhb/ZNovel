@@ -1,0 +1,85 @@
+{% extends "main.html" %}
+
+{% block header %}
+<title>{{ title }}</title>
+<link rel="stylesheet" href="/md/static/md/css/md.css">
+{% endblock %}
+
+{% block content %}
+<body class="mdui-appbar-with-toolbar">
+
+<div class="mdui-drawer mdui-drawer-close" id="drawer">
+    {% include "user_status.html" %}
+    <ul class="mdui-list">
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">library_books</i>
+            <div class="mdui-list-item-content"><a href="/md/books">我的书架</a></div>
+        </li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">directions_run</i>
+            <div class="mdui-list-item-content"><a href="/md/similar_user">书友推荐</a></div>
+        </li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">book</i>
+            <div class="mdui-list-item-content"><a href="/md/bookmarks">我的书签</a></div>
+        </li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">favorite</i>
+            <div class="mdui-list-item-content"><a href="/md/book_list">我的书单</a></div>
+        </li>
+        <li class="mdui-list-item mdui-ripple mdui-list-item-active">
+            <i class="mdui-list-item-icon mdui-icon material-icons">notifications</i>
+            <div class="mdui-list-item-content"><a href="/md/noti_book">新书提醒</a></div>
+        </li>
+        <li class="mdui-subheader">设置</li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">settings</i>
+            <div class="mdui-list-item-content"><a href="/md/setting">个人设置</a></div>
+        </li>
+
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">feedback</i>
+            <div class="mdui-list-item-content">
+                <a target="_blank" href="">我要反馈</a>
+            </div>
+        </li>
+    </ul>
+</div>
+
+{% include "toolbar.html" %}
+
+<div class="mdui-container-fluid">
+    <div class="mdui-textfield" style="width: 80%;margin-left: 10%;margin-bottom: 12px;">
+        <input name="author_name" class="mdui-textfield-input mdui-float-left" style="max-width: 70%" type="text"
+               placeholder="作者名"/>
+        <button id="authorBtn" class="mdui-btn mdui-color-theme-accent mdui-ripple mdui-float-right"
+                style="min-width: 65px !important;">添加
+        </button>
+    </div>
+    <div class="mdui-divider"></div>
+    {% if is_author %}
+    <div class="author-name-tag">
+        {%for item in author_list%}
+        <div class="mdui-chip">
+            <span class="mdui-chip-icon mdui-color-blue"><i class="mdui-icon material-icons">face</i></span>
+            <span class="mdui-chip-title">{{item.author_name}}</span>
+            <span class="mdui-chip-delete"><i class="mdui-icon material-icons">cancel</i></span>
+        </div>
+        {%endfor%}
+    </div>
+
+    {% else %}
+    <div class="author-name-tag">
+        <div class="mdui-chip">
+            <span class="mdui-chip-icon mdui-color-blue"><i class="mdui-icon material-icons">face</i></span>
+            <span class="mdui-chip-title">输入作者名, 追踪新书动态</span>
+        </div>
+    </div>
+    {% endif %}
+
+    {% include "is_login.html" %}
+</div>
+{% endblock %}
+{% block script %}
+<script src="/md/static/md/js/noti.js"></script>
+{% endblock %}

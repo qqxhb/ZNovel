@@ -1,0 +1,83 @@
+{% extends "main.html" %}
+
+{% block header %}
+<title>{{ title }}</title>
+<link rel="stylesheet" href="/md/static/md/css/md.css">
+{% endblock %}
+
+{% block content %}
+<body class="mdui-appbar-with-toolbar">
+
+<div class="mdui-drawer mdui-drawer-close" id="drawer">
+    {% include "user_status.html" %}
+    <ul class="mdui-list">
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">library_books</i>
+            <div class="mdui-list-item-content"><a href="/md/books">我的书架</a></div>
+        </li>
+        <li class="mdui-list-item mdui-ripple mdui-list-item-active">
+            <i class="mdui-list-item-icon mdui-icon material-icons">directions_run</i>
+            <div class="mdui-list-item-content"><a href="/md/similar_user">书友推荐</a></div>
+        </li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">book</i>
+            <div class="mdui-list-item-content"><a href="/md/bookmarks">我的书签</a></div>
+        </li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">favorite</i>
+            <div class="mdui-list-item-content"><a href="/md/book_list">我的书单</a></div>
+        </li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">notifications</i>
+            <div class="mdui-list-item-content"><a href="/md/noti_book">新书提醒</a></div>
+        </li>
+        <li class="mdui-subheader">设置</li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">settings</i>
+            <div class="mdui-list-item-content"><a href="/md/setting">个人设置</a></div>
+        </li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">feedback</i>
+            <div class="mdui-list-item-content">
+                <a target="_blank" href="">我要反馈</a>
+            </div>
+        </li>
+    </ul>
+</div>
+
+{% include "toolbar.html" %}
+
+<div class="mdui-container-fluid">
+    <div class="mdui-table-fluid">
+        {% if is_similar %}
+        <table class="mdui-table mdui-table-hoverable" style="margin-bottom: 50px;">
+            <thead>
+            <tr align="center">
+                <th>相似用户</th>
+                <th>相似度</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for v in similar_user%}
+            {% for key in v %}
+            <tr>
+                <td>
+                    <a href="/admin/search_user?ss={{key|replace('&#183;','.')}}" target="_blank">{{key|replace('&#183;','.')}}</a>
+                </td>
+                <td>
+                    <a href="#">{{v[key]}}</a>
+                </td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <center style="height: 50px;line-height: 50px">暂无相似书友</center>
+        {% endif %}
+    </div>
+    {% include "is_login.html" %}
+</div>
+{% endblock %}
+{% block script %}
+{% endblock %}

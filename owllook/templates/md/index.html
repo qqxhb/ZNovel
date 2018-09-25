@@ -1,0 +1,151 @@
+{% extends "main.html" %}
+
+{% block header %}
+<title>{{ title }} - 网络小说搜索引擎 - 最简洁清新的搜索阅读体验</title>
+<link rel="stylesheet" href="/md/static/md/css/md.css">
+{% endblock %}
+
+{% block content %}
+<body class="mdui-appbar-with-toolbar">
+
+<div class="mdui-drawer mdui-drawer-close" id="drawer">
+    {% include "user_status.html" %}
+    <ul class="mdui-list">
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">library_books</i>
+            <div class="mdui-list-item-content"><a href="/md/books">我的书架</a></div>
+        </li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">directions_run</i>
+            <div class="mdui-list-item-content"><a href="/md/similar_user">书友推荐</a></div>
+        </li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">book</i>
+            <div class="mdui-list-item-content"><a href="/md/bookmarks">我的书签</a></div>
+        </li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">favorite</i>
+            <div class="mdui-list-item-content"><a href="/md/book_list">我的书单</a></div>
+        </li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">notifications</i>
+            <div class="mdui-list-item-content"><a href="/md/noti_book">新书提醒</a></div>
+        </li>
+        <li class="mdui-subheader">设置</li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">settings</i>
+            <div class="mdui-list-item-content"><a href="/md/setting">个人设置</a></div>
+        </li>
+        <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">feedback</i>
+            <div class="mdui-list-item-content">
+                <a target="_blank" href="">我要反馈</a>
+            </div>
+        </li>
+    </ul>
+</div>
+
+{% include "toolbar.html" %}
+
+<div class="mdui-container">
+    <div class="mdui-typo" style="margin-top: 3%">
+        <div class="mdui-chip">
+            <a href="/md"><span class="rank-list mdui-chip-title">owllook</span></a>
+        </div>
+        <div class="mdui-chip">
+            <a href="/md/qidian"><span class="rank-list mdui-chip-title">起点小说榜单</span></a>
+        </div>
+        <div class="mdui-chip">
+            <a href="/md/zh_bd_novels"><span class="rank-list mdui-chip-title">纵横百度月票榜</span></a>
+        </div>
+    </div>
+    <div class="mdui-divider" style="margin-top: 1%;"></div>
+    <div class="mdui-typo" style="margin-top: 1%">
+        <div class="mdui-chip">
+            {% if is_owl %}
+            <span class="mdui-chip-title mdui-text-color-red">{{first_type_title}}</span>
+            {% elif is_qidian %}
+            <span class="mdui-chip-title mdui-text-color-red"><a href="/md/qidian?type={{first_type_title}}">{{first_type_title}}</a></span>
+            {% elif is_bd %}
+            <span class="mdui-chip-title mdui-text-color-red">{{first_type_title}}</span>
+            {% else %}
+            {% endif %}
+        </div>
+        {%for each in first_type%}
+        <div class="mdui-chip">
+            <span class="mdui-chip-title mdui-text-color-red"><a href="/md/qidian?type={{each}}">{{each}}</a></span>
+        </div>
+        {%endfor%}
+
+    </div>
+    <div class="mdui-divider" style="margin-top: 1%; margin-bottom: 2%"></div>
+    <div class="mdui-table-fluid">
+        {% if is_owl %}
+        <table class="mdui-table" style="margin-bottom: 50px;">
+            <thead>
+            <tr align="center">
+                {%for each_head in novels_head%}
+                <th>{{each_head}}</th>
+                {%endfor%}
+            </tr>
+            </thead>
+            <tbody>
+            {%for each_ranking in search_ranking%}
+            <tr>
+                <td>{{each_ranking.index}}</td>
+                <td><a href="/search?wd={{each_ranking.keyword}}" target="_blank">{{each_ranking.keyword}}</a></td>
+                <td>{{each_ranking.count}}</td>
+            </tr>
+            {%endfor%}
+            </tbody>
+        </table>
+        {% elif is_qidian %}
+        {%for each_ranking in search_ranking.data%}
+        <table class="mdui-table mdui-col-sm-12 mdui-col-md-4 mdui-col-lg-3" style="margin-bottom: 50px;">
+            <thead>
+            <tr align="center">
+                {%for each_head in novels_head%}
+                <th>{{each_head}}</th>
+                {%endfor%}
+                <th><a target="_blank" href="{{each_ranking.more}}">{{each_ranking.title}}</a></th>
+            </tr>
+            </thead>
+            <tbody>
+            {%for each_book in each_ranking.book_list%}
+            <tr>
+                <td>{{each_book.num}}</td>
+                <td><a href="/search?wd={{each_book.name}}" target="_blank">{{each_book.name}}</a></td>
+                <!--<td>{{each_ranking.title}}</td>-->
+            </tr>
+            {%endfor%}
+            </tbody>
+        </table>
+        {%endfor%}
+        {% elif is_bd %}
+        <table class="mdui-table" style="margin-bottom: 50px;">
+            <thead>
+            <tr align="center">
+                {%for each_head in novels_head%}
+                <th>{{each_head}}</th>
+                {%endfor%}
+            </tr>
+            </thead>
+            <tbody>
+            {%for each_ranking in search_ranking.data%}
+            <tr>
+                <td>{{each_ranking.num}}</td>
+                <td><a href="/search?wd={{each_ranking.name}}" target="_blank">{{each_ranking.name}}</a></td>
+                <td>{{each_ranking.type}}</td>
+            </tr>
+            {%endfor%}
+            </tbody>
+        </table>
+        {% else %}
+        {% endif %}
+
+    </div>
+    {% include "is_login.html" %}
+</div>
+{% endblock %}
+{% block script %}
+{% endblock %}

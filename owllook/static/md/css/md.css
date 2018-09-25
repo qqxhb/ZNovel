@@ -1,0 +1,41 @@
+th, td {
+    text-align: center !important;
+}
+
+table a {
+    color: #337ab7 !important;
+    text-decoration: none !important;
+}
+
+table a:hover {
+    color: black !important;
+}
+
+.mdui-panel-fluid {
+    margin-top: 2%;
+    width: 80%;
+    margin-left: 10%
+}
+
+.email-error, .pass-error {
+    height: 12px;
+    margin-top: 8px;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 12px;
+    color: #f44336;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    visibility: hidden;
+}
+
+.owl-ranking {
+    max-width: 300px;
+    height: 500px;
+    margin: 5px;
+}
+
+.author-name-tag{
+    margin-left: 10%;
+    margin-top: 13px;
+}

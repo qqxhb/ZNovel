@@ -1,0 +1,193 @@
+{% extends "main.html" %}
+
+{% block header %}
+<title>{{ title }} - 最简洁清新的搜索阅读体验</title>
+<link rel="stylesheet" href="static/novels/css/index.css">
+<link rel="stylesheet" type="text/css" href="static/novels/css/normalize.css" />
+<link rel="stylesheet" href="static/novels/css/font-awesome.min.css">
+<link rel="stylesheet" type="static/novels/text/css" href="css/demo.css">
+<link rel="stylesheet" href="static/novels/css/style.css">
+<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+<script src="static/novels/js/jquery.min.js"></script>
+<style type="text/css">
+.cl li{
+    list-style: none;
+    text-align: left;
+}
+.cl{
+    margin: 0px;
+    padding: 0px;
+
+}
+  /* #c li:HOVER{
+   background-color: #F9F9F9;
+  } */
+  .onmouse{
+   background-color: #F9F9F9;
+  }
+  .outmouse{
+   background-color:white;
+  }
+  #contain{
+   width: 50%;
+  }
+   #login form{
+        width: 100%;
+   }
+</style>
+<script type="text/javascript">
+    $(function(){
+　　$("#c").width($("#keyword").width()+15);
+    $("#c").css("margin-left",($("#pdiv").width()-$("#keyword").width())/2-7);
+    });
+function getMoreContents() {
+    ClearContent();
+    var keyword = $("#keyword").val();
+    if (keyword==null||keyword==""){
+        $("#keyword").attr("autocomplete","on");
+        $("#c").css("border","none");
+        return;
+    }
+    $("#keyword").attr("autocomplete","off");
+    $.getJSON(
+            "http://97.64.40.54:8001/api/suggest?title="+keyword,//url
+            function(data){//获取响应回来的数据
+                    setContent(data.data);
+            },
+            //发送数据类型
+            "text"
+    );
+}
+//设置关联数据的展示
+function setContent(contents) {
+  var size=contents.length;
+    if(size>0){
+        $("#c").css("border","1px solid #000");
+    }
+  for(var i=0;i<size;i++)
+    {
+     var nextNode=contents[i];//json格式的第i个数据
+     var li =document.createElement("li");
+     li.onmouseover=function(){
+       this.className="onmouse";
+       $("#keyword").val(this.innerHTML);
+     }
+     li.onmouseout=function(){
+       this.className="outmouse";
+     }
+     var text=document.createTextNode(contents[i]._source.title);
+     li.appendChild(text);
+     document.getElementById("c").appendChild(li);
+    }
+}
+//清空数据
+function ClearContent() {
+  $('#c li').remove();
+    $("#c").css("border","none");
+}
+//当控件失去焦点时，清空数据
+function outFouce() {
+  ClearContent();
+}
+    var sort = {{search_ranking|safe}};
+    var data=[];
+	function createRandomItemStyle() {
+		return {
+			normal: {
+				color: 'rgb(' + [
+					Math.round(Math.random() * 160),
+					Math.round(Math.random() * 160),
+					Math.round(Math.random() * 160)
+				].join(',') + ')'
+			}
+		};
+	}
+	 $.each(sort, function (n, val) {
+	            var temp = {};
+               temp.name=val.keyword;
+               temp.value=val.count;
+               if(temp.value<10){
+                   temp.value+=10;
+               }
+               temp.itemStyle=createRandomItemStyle();
+                data.push(temp);
+           });
+        // 路径配置
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/wordCloud' // 使用柱状图就加载bar模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main'));
+                 myChart.on('click', function (params) {
+                window.open('/search?wd=' + encodeURIComponent(params.name));
+
+            });
+                var option = {
+    tooltip: {
+        show: true
+    },
+    series: [{
+        name: '搜索排行榜',
+        type: 'wordCloud',
+        size: ['100%', '100%'],
+        textRotation : [0, 45, 90, -45],
+        textPadding: 0,
+        autoSize: {
+            enable: true,
+            minSize: 14
+        },
+        data: data
+    }]
+};
+
+                // 为echarts对象加载数据
+                myChart.setOption(option);
+            }
+        );
+    </script>
+{% endblock %}
+
+{% block content %}
+<div class="header">
+    {% if is_login %}
+    {% include "login.html" %}
+    {% else %}
+    <div class="login">
+        <a class="btn btn-primary pull-right" href="#" role="button" data-toggle="modal" data-target="#login">登录</a>
+    </div>
+    {% endif %}
+</div>
+<div class="container">
+    <div class="logo">
+        <img class="img-responsive center-block" src="static/novels/img/logo_home.png" alt="owllook">
+    </div>
+    <!--<form action="/search" method="get" class="home_search center-block">-->
+        <!--<div class="search center-block" id="pdiv">-->
+            <!--<span><input type="text" name="wd" id="keyword" class="form-control center-block" placeholder="请输入小说关键词(书名、作者、简介)" onkeyup="getMoreContents()" onblur="outFouce()" onfocus="getMoreContents()">-->
+                <!--</span>-->
+            <!--<span><input class="btn btn-default mi mi-SearchAndApps" type="submit" value="Search"></span>-->
+
+            <!--<ul id="c"  style="width: 55%;"  class=" cl">-->
+<!--     </ul>-->
+        <!--</div>-->
+    <!--</form>-->
+    <div class="search d3" id="pdiv">
+	<form  action="/search" method="get" >
+	  <input type="text"  name="wd" id="keyword"  placeholder="请输入小说关键词(书名、作者、简介)" onkeyup="getMoreContents()" onblur="outFouce()" onfocus="getMoreContents()">
+	  <button type="submit"></button>
+	</form>
+        <ul id="c"  style="position:absolute;z-index:100;"  class=" cl"></ul>
+	</div>
+    <div id="main" style="height:400px; margin-top: 8%" class="center-block"></div>
+</div>
+{% endblock %}

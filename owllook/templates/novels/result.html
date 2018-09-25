@@ -1,0 +1,177 @@
+{% extends "main.html" %}
+
+{% block header %}
+<title>{{ name }} - 搜索结果 - owllook</title>
+<link rel="stylesheet" href="static/novels/css/result.css">
+<link rel="stylesheet" href="static/novels/css/new.css">
+<style>
+    @media (min-width: 1680px) {
+        .container {
+            margin-left: 3% !important;
+        }
+    }
+	li{ list-style:none }
+</style>
+<script src="static/novels/js/bootstrap-paginator.js"></script>
+<script>
+	$(function(){
+            var element = $('#bp-3-element-test');
+
+            var options = {
+                bootstrapMajorVersion:3,
+                currentPage: {{current}},//当前页
+                numberOfPages: 10,//每次展示多少页
+                totalPages:{{total}},//总页数
+                alignment:'right',//位置
+                pageUrl: function(type, page, current){//访问连接
+                         return "search?wd={{name}}"+"&page="+page;
+                    },
+                itemTexts: function (type, page, current) { //样式文字设置
+                    switch (type) {
+                    case "first":
+                        return "首页";
+                    case "prev":
+                        return "上一页";
+                    case "next":
+                        return "下一页";
+                    case "last":
+                        return "最后";
+                    case "page":
+                        return ""+page;
+                    }
+                },
+                shouldShowPage:function(type, page, current){//控制哪些显示，哪些隐藏
+                        switch(type)
+                        {
+                            case "first":
+                            case "last":
+                                return false;  //首页最后一页隐藏
+                            default:
+                                return true;  //其他显示
+                        }
+                 },
+                 tooltipTitles: function (type, page, current) { //提示框，当鼠标放上去给提示
+                        switch (type) {
+                        case "first":
+                            return "提示首页";
+                        case "prev":
+                            return "提示前页";
+                        case "next":
+                            return "Tooltip for next page";
+                        case "last":
+                            return "Tooltip for last page";
+
+                        }
+                    }
+               /* useBootstrapTooltip:true,
+
+                onPageClicked: function(e,originalEvent,type,page){
+                $('#alert-content').text("点击页数时，触发该函数, type: "+type+" page: "+page);
+                },
+
+                onPageChanged: function(e,oldPage,newPage){
+                $('#alert-content').text("当页面改变时，触发该函数, old: "+oldPage+" new: "+newPage);
+            }*/
+
+
+            }
+
+            element.bootstrapPaginator(options);
+
+
+    });
+	function autoScroll(obj){
+			$(obj).find("ul").animate({
+				marginTop : "-39px"
+			},500,function(){
+				$(this).css({marginTop : "0px"}).find("li:first").appendTo(this);
+			})
+		}
+		$(function(){
+			setInterval('autoScroll(".maquee")',3000);
+
+		})
+</script>
+{% endblock %}
+
+{% block content %}
+{% include "search_bar.html" %}
+<div class="container">
+    <div class="result row">
+        <div class="show-result col-sm-7 col-xs-12" style="display: table-cell;;margin-right:10%">
+            <p style="color: #868383;font-size: 13px; ">找到 {{count}} 条结果（用时{{time}}s）</p>
+            <div class="list-unstyled item">
+                {% if not books %}
+				<h4>啊哦，似乎没有找到你需要的结果！</h4>
+				{% endif %}
+				{% for i in books %}
+				<ul class="list-group">
+					<li class="list-group-item">
+						<table>
+							<tr>
+								<td>
+									<img class="img" src="{{i._source.image}}">
+								</td>
+								<td>
+									{% if i.highlight.title %}
+									<a target="_blank" href="/chapter?url={{i._source.url|replace('#Catalog','')}}&novels_name={{i._source.title}}">{{i.highlight.title[0] | safe}}</a>
+									{% else %}
+									<a target="_blank" href="/chapter?url={{i._source.url|replace('#Catalog','')}}&novels_name={{i._source.title}}">{{i._source.title}}</a>
+									{% endif %}
+									{% if i.highlight.author %}
+									<p><b>作者：</b>{{i.highlight.author[0] | safe}}</p>
+									{% else %}
+									<p><b>作者：</b>{{i._source.author}}</p>
+									{% endif %}
+									<p><b>类型：</b>{{i._source.style}}</p>
+									 {% if i.highlight.profile %}
+									<p><b>简介：</b>{{i.highlight.profile[0] | safe}}</p>
+									{% else %}
+									<p><b>简介：</b>{{i._source.profile}}</p>
+									{% endif %}
+									<p><b>更新时间：</b>{{i._source.time}}</p>
+								</td>
+							</tr>
+						</table>
+					</li>
+				</ul>
+				{% endfor %}
+            </div>
+			<div>
+				<ul id='bp-3-element-test'></ul>
+			</div>
+            <div class="move">
+                <div class="move_up">
+                    <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                </div>
+                <div class="move_down">
+                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                </div>
+            </div>
+        </div>
+		<div class="Top_Record" style="display: table-cell;width:30%;">
+			<div class="record_Top"><p>搜索排行榜</p></div>
+			<div class="topRec_List">
+				<dl>
+					<dd>排名</dd>
+					<dd>小说名</dd>
+					<dd>指数</dd>
+				</dl>
+				<div class="maquee">
+					<ul>
+						 {%for each_ranking in search_ranking%}
+						<li>
+							<div>{{each_ranking.index}}</div>
+							<div><a href="/search?wd={{each_ranking.keyword}}" target="_blank">{{each_ranking.keyword}}</a></div>
+							<div>{{each_ranking.count}}</div>
+						</li>
+						{%endfor%}
+
+					</ul>
+				</div>
+			</div>
+		</div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends "novels/main1.html" %}
+
+{% block header %}
+<title>排行榜</title>
+<!--<link rel="stylesheet" href="static/novels/css/result.css">-->
+<!--<link rel="stylesheet" href="static/novels/css/bootstrap.min.css">-->
+<!--<link rel="stylesheet" href="static/novels/css/new.css">-->
+<!--<script src="static/novels/js/bootstrap-paginator.js"></script>-->
+<link href="https://cdn.bootcss.com/mdui/0.2.1/css/mdui.min.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/mdui/0.2.1/js/mdui.min.js"></script>
+<style>
+    @media (min-width: 1680px) {
+        .container {
+            margin-left: 3% !important;
+        }
+    }
+</style>
+<script>
+
+</script>
+{% endblock %}
+
+{% block content %}
+{% include "novels/search_bar1.html" %}
+<div class="mdui-container">
+    <!--<div class="mdui-typo" style="margin-top: 3%">-->
+        <!--<div class="mdui-chip">-->
+            <!--<a href="/md"><span class="rank-list mdui-chip-title">owllook</span></a>-->
+        <!--</div>-->
+        <!--<div class="mdui-chip">-->
+            <!--<a href="/md/qidian"><span class="rank-list mdui-chip-title">起点小说榜单</span></a>-->
+        <!--</div>-->
+        <!--<div class="mdui-chip">-->
+            <!--<a href="/md/zh_bd_novels"><span class="rank-list mdui-chip-title">纵横百度月票榜</span></a>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="mdui-divider" style="margin-top: 1%;"></div>
+    <div class="mdui-typo" style="margin-top: 1%">
+        <div class="mdui-chip">
+            {% if is_owl %}
+            <span class="mdui-chip-title mdui-text-color-red">{{first_type_title}}</span>
+            {% elif is_qidian %}
+            <span class="mdui-chip-title mdui-text-color-red"><a href="/md/qidian?type={{first_type_title}}">{{first_type_title}}</a></span>
+            {% elif is_bd %}
+            <span class="mdui-chip-title mdui-text-color-red">{{first_type_title}}</span>
+            {% else %}
+            {% endif %}
+        </div>
+        {%for each in first_type%}
+        <div class="mdui-chip">
+            <span class="mdui-chip-title mdui-text-color-red"><a href="/md/qidian?type={{each}}">{{each}}</a></span>
+        </div>
+        {%endfor%}
+
+    </div>
+    <div class="mdui-divider" style="margin-top: 1%; margin-bottom: 2%"></div>
+    <div class="mdui-table-fluid">
+        {% if is_owl %}
+        <table class="mdui-table" style="margin-bottom: 50px;">
+            <thead>
+            <tr align="center">
+                {%for each_head in novels_head%}
+                <th>{{each_head}}</th>
+                {%endfor%}
+            </tr>
+            </thead>
+            <tbody>
+            {%for each_ranking in search_ranking%}
+            <tr>
+                <td>{{each_ranking.index}}</td>
+                <td><a href="/search?wd={{each_ranking.keyword}}" target="_blank">{{each_ranking.keyword}}</a></td>
+                <td>{{each_ranking.count}}</td>
+            </tr>
+            {%endfor%}
+            </tbody>
+        </table>
+        {% elif is_qidian %}
+        {%for each_ranking in search_ranking.data%}
+        <table class="mdui-table mdui-col-sm-12 mdui-col-md-4 mdui-col-lg-3" style="margin-bottom: 50px;">
+            <thead>
+            <tr align="center">
+                {%for each_head in novels_head%}
+                <th>{{each_head}}</th>
+                {%endfor%}
+                <th><a target="_blank" href="{{each_ranking.more}}">{{each_ranking.title}}</a></th>
+            </tr>
+            </thead>
+            <tbody>
+            {%for each_book in each_ranking.book_list%}
+            <tr>
+                <td>{{each_book.num}}</td>
+                <td><a href="/search?wd={{each_book.name}}" target="_blank">{{each_book.name}}</a></td>
+                <!--<td>{{each_ranking.title}}</td>-->
+            </tr>
+            {%endfor%}
+            </tbody>
+        </table>
+        {%endfor%}
+        {% elif is_bd %}
+        <table class="mdui-table" style="margin-bottom: 50px;">
+            <thead>
+            <tr align="center">
+                {%for each_head in novels_head%}
+                <th>{{each_head}}</th>
+                {%endfor%}
+            </tr>
+            </thead>
+            <tbody>
+            {%for each_ranking in search_ranking.data%}
+            <tr>
+                <td>{{each_ranking.num}}</td>
+                <td><a href="/search?wd={{each_ranking.name}}" target="_blank">{{each_ranking.name}}</a></td>
+                <td>{{each_ranking.type}}</td>
+            </tr>
+            {%endfor%}
+            </tbody>
+        </table>
+        {% else %}
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

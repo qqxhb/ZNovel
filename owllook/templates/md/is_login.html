@@ -1,0 +1,23 @@
+{% if is_login %}
+{% else %}
+<div class="mdui-dialog" id="owl-login">
+    <div class="mdui-tab mdui-tab-full-width" id="owl-login-tab">
+        <a href="#owl-login-tab1" class="mdui-ripple">登录</a>
+        <!--<a href="#owl-login-tab2" class="mdui-ripple">注册</a>-->
+    </div>
+    <div id="owl-login-tab1" class="mdui-p-a-2">
+        <div class="mdui-textfield">
+            <label class="mdui-textfield-label">用户名</label>
+            <input class="mdui-textfield-input" id="owllook_user" type="text"/>
+        </div>
+        <div class="mdui-textfield">
+            <label class="mdui-textfield-label">密码</label>
+            <input class="mdui-textfield-input" id="owllook_pass" type="password"/>
+        </div>
+        <div class="mdui-dialog-actions">
+            <button class="mdui-btn mdui-ripple" onclick="userStatus.login()">登录</button>
+        </div>
+    </div>
+
+</div>
+{% endif %}

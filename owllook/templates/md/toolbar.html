@@ -1,0 +1,54 @@
+<div class="mdui-drawer-body-left mdui-appbar mdui-appbar-fixed">
+    <div class="mdui-toolbar mdui-color-indigo-400">
+        <a href="javascript:;" class="mdui-btn mdui-btn-icon" id="toggle"><i
+                class="mdui-icon material-icons">menu</i></a>
+        <a href="/" class="mdui-typo-headline" mdui-tooltip="{content: '回到首页'}">owllook</a>
+        <div class="mdui-toolbar-spacer"></div>
+        <div class="mdui-textfield mdui-textfield-expandable mdui-float-right">
+            <button class="mdui-textfield-icon mdui-btn mdui-btn-icon" mdui-tooltip="{content: '搜索'}"><i
+                    class="mdui-icon material-icons">search</i>
+            </button>
+            <form action="/search" method="get">
+
+                <input class="mdui-textfield-input" type="text" name="wd" placeholder="请输入小说关键词(书名、作者、简介)"/>
+            </form>
+            <button class="mdui-textfield-close mdui-btn mdui-btn-icon"><i
+                    class="mdui-icon material-icons">close</i>
+            </button>
+        </div>
+        <div class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white"
+             mdui-dialog="{target: '#owllook-theme'}" mdui-tooltip="{content: '设置主题'}">
+            <i class="mdui-icon material-icons">color_lens</i>
+        </div>
+    </div>
+</div>
+
+
+<div class="mdui-dialog mdui-dialog-open" id="owllook-theme">
+    <div class="mdui-dialog-title">设置文档主题</div>
+    <div class="mdui-dialog-content" style="height: 148px;">
+
+        <p class="mdui-typo-title">主题色</p>
+        <div class="mdui-row-xs-1 mdui-row-sm-2 mdui-row-md-3">
+            <div class="mdui-col">
+                <label id="owllook-light" class="mdui-radio mdui-m-b-1">
+                    <input type="radio" name="owl-theme-layout" value="light" checked="">
+                    <i class="mdui-radio-icon"></i>
+                    Light
+                </label>
+            </div>
+            <div class="mdui-col">
+                <label id="owllook-dark" class="mdui-radio mdui-m-b-1">
+                    <input type="radio" name="owl-theme-layout" value="dark">
+                    <i class="mdui-radio-icon"></i>
+                    Dark
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="mdui-divider"></div>
+    <div class="mdui-dialog-actions">
+        <!--<button class="mdui-btn mdui-ripple mdui-float-left" mdui-dialog-cancel="">恢复默认主题</button>-->
+        <button id="themeBtn" class="mdui-btn mdui-ripple" mdui-dialog-confirm="">ok</button>
+    </div>
+</div>
