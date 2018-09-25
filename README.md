@@ -15,7 +15,7 @@
 - 搜索可以基于标题、作者及简介搜索
 - 搜索结果页 -列表调整 显示封面等
 - 搜索结果 添加搜索排行榜
-- 去除所有 蓝色界面（感觉冗余）
+- 去除所有 蓝色界面（对我多余）
 - 添加新的解析规则，及新加爬虫
 
 #### Installation
@@ -74,7 +74,7 @@ docker run --env-file ./dev_owllook.env -d -p 8001:8001 owllook:0.1
 - 书架
 - 书签
 - 登录
-- 初步兼容手机（后续跟进）
+- 初步兼容手机
 - 注册（开放注册）
 - 上次阅读记录
 - 最新章节
@@ -91,22 +91,45 @@ docker run --env-file ./dev_owllook.env -d -p 8001:8001 owllook:0.1
 ### Screenshots
 
 下面是一些截图展示，具体效果图请看[这里](http://oe7yjec8x.bkt.clouddn.com/howie/2017-03-08-owllook.gif)：
+整体：
 
-2017-07-29更新
+![books](./docs/imgs/structure.jpeg)
 
-书架：
 
-![books](./docs/imgs/book.jpeg)
+首页：
+
+![books](./docs/imgs/index.jpeg)
+
+分类排行榜：
+
+![books](./docs/imgs/catalog.jpeg)
+
+
+结果页：
+
+![books](./docs/imgs/result.jpeg)
+
+
 
 目录解析页：
 
-![demo](./docs/imgs/chapter.png)
+![demo](./docs/imgs/detail-catalog.png)
 
 
 
 阅读：
 
-![content](./docs/imgs/content.png)
+![content](./docs/imgs/detail.png)
+
+
+书架：
+
+![books](./docs/imgs/bookshelf.jpeg)
+
+
+书签：
+
+![books](./docs/imgs/bookshelf.jpeg)
 
 ### FAQ
 
