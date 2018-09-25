@@ -93,21 +93,21 @@ docker run --env-file ./dev_owllook.env -d -p 8001:8001 owllook:0.1
 下面是一些截图展示，具体效果图请看[这里](http://oe7yjec8x.bkt.clouddn.com/howie/2017-03-08-owllook.gif)：
 整体：
 
-![books](./docs/imgs/structure.jpeg)
+![books](./docs/imgs/structure.png)
 
 
 首页：
 
-![books](./docs/imgs/index.jpeg)
+![books](./docs/imgs/index.png)
 
 分类排行榜：
 
-![books](./docs/imgs/catalog.jpeg)
+![books](./docs/imgs/catalog.png)
 
 
 结果页：
 
-![books](./docs/imgs/result.jpeg)
+![books](./docs/imgs/result.png)
 
 
 
@@ -124,12 +124,12 @@ docker run --env-file ./dev_owllook.env -d -p 8001:8001 owllook:0.1
 
 书架：
 
-![books](./docs/imgs/bookshelf.jpeg)
+![books](./docs/imgs/bookshelf.png)
 
 
 书签：
 
-![books](./docs/imgs/bookshelf.jpeg)
+![books](./docs/imgs/bookshelf.png)
 
 ### FAQ
 
