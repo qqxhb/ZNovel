@@ -129,7 +129,7 @@ docker run --env-file ./dev_owllook.env -d -p 8001:8001 owllook:0.1
 
 书签：
 
-![books](./docs/imgs/bookshelf.png)
+![books](./docs/imgs/history.png)
 
 ### FAQ
 
