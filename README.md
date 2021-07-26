@@ -20,12 +20,12 @@
 
 #### Installation
 
-请先装好mongo、redis及Elasticsearch，不会安装mongo看[这里](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-centos-7)，不会安装Elasticsearch及配置分词器者可以参看[这篇博客](https://www.cnblogs.com/hanyinglong/p/5409003.html),也可以自己寻找教程
+请先装好mongo、redis及Elasticsearch，安装mongo看[这里](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-centos-7)，安装Elasticsearch及配置分词器者可以参看[这篇博客](https://www.cnblogs.com/hanyinglong/p/5409003.html),也可以自己寻找其他教程
  装好后，进入项目目录，依照步骤执行：
 
 ```shell
 # 下载代码
-git clone https://github.com/howie6879/owllook
+git clone https://github.com/qqxhb/ZNovel
 cd owllook
 pip install pipenv
 pipenv install --python /Users/howie/anaconda3/envs/python36/bin/python3.6
@@ -39,29 +39,6 @@ python server.py
 # 或者
 gunicorn --bind 127.0.0.1:8001 --worker-class sanic.worker.GunicornWorker server:app
 
-# 方案二 推荐 
-# 直接下载镜像
-docker pull howie6879/owllook
-# 创建dev_owllook.env文件
-vim dev_owllook.env
-# 写入一些环境变量
-# start ===============
-# 需要设置就填写  不需要就删掉
-MODE=DEV
-REDIS_ENDPOINT= ip
-REDIS_PORT= port
-REDIS_PASSWORD=''
-MONGO_HOST= ip
-MONGO_PORT= port
-MONGO_USERNAME=''
-MONGO_PASSWORD=''
-# end ===============
-# 运行 在dev_owllook.env里面填上数据库配置 数据库ip需要注意 请将连接ip设置为ifconfig显示的ip
-docker run --env-file ./dev_owllook.env -d -p 8001:8001 howie6879/owllook:latest
-# 也可以自己打包
-docker build -t owllook:0.1 .
-# 运行
-docker run --env-file ./dev_owllook.env -d -p 8001:8001 owllook:0.1
 ```
 
 #### Features
